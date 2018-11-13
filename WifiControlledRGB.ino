@@ -5,7 +5,7 @@
 #define LED_BLUE  13
 
 const char* ssid = "wagwan";
-const char* password = "3035highway7";
+const char* password = "enter password here**";
 
 WiFiServer server(80);
 
