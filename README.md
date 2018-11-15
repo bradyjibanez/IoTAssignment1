@@ -1,7 +1,7 @@
 Be sure to run with Python3 on Raspberrypi 3 running Raspbian
 
 Install pymongo:
-	~/$ pip3 install pymongo=2.7.2
+	~/$ pip3 install pymongo==2.7.2
 
 Install urllib:
 	~/$ pip3 install urllib
