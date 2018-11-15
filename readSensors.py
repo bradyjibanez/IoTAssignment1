@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-from mongoTest import Update
+from mongoUpdate import Update
 import urllib, http.client, time
 
 GPIO.setmode(GPIO.BOARD)
