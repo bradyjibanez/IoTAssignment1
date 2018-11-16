@@ -24,7 +24,7 @@ Configure mongoDB:
 		~/$ mongo
 		> use IoTI
 		> db.createCollection("AmbientLightSensorData")
-		> dd.addUser(
+		> db.addUser(
 		... {
 		... user: "thepi",
 		... pwd: "thepi",
