@@ -34,6 +34,10 @@ class Update:
 		userData = response.read().decode("utf-8")
 		userDataJSON = json.loads(userData)
 
+		myurl = "https://demo.thingsboard.io/api/v1/3mmZ09cG3cyrzFZku4BF/telemetry"
+		req = urllib.request.Request(myurl)
+		req.add_header('Content-Type', 'application/json; charset=utf-8')
+
 		lightStatus = "off"
 
 #		update = input('Update the db with whatever...or enter quit to quit: ')
@@ -56,6 +60,13 @@ class Update:
 				"date": userCTimeString}
 			ambientLightSensorData.insert(post)
 			count += 1
+
+			jsondata = json.dumps(post)
+			jsondataasbytes = jsondata.encode('utf-8')  # needs to be bytes
+			req.add_header('Content-Length', len(jsondataasbytes))
+			# print (jsondataasbytes)
+			response = urllib.request.urlopen(req, jsondataasbytes)
+
 		else:
 			lightStatus = "off"
 			post = {"author": yourName,
@@ -65,3 +76,9 @@ class Update:
 				"date": userCTimeString}
 			ambientLightSensorData.insert(post)
 			count += 1
+
+			jsondata = json.dumps(post)
+			jsondataasbytes = jsondata.encode('utf-8')  # needs to be bytes
+			req.add_header('Content-Length', len(jsondataasbytes))
+			# print (jsondataasbytes)
+			response = urllib.request.urlopen(req, jsondataasbytes)
