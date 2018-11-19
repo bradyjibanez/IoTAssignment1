@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 from urllib.request import urlopen
-import socket, datetime, pytz, sys, json
+import socket, datetime, pytz, sys, json, urllib
 import Adafruit_DHT
 
 
@@ -37,9 +37,9 @@ class Update:
 		userDataJSON = json.loads(userData)
 
 		# DHT22 Sensor Initialization
-		DHT_READ_TIMEOUT = 5
-		DHT_DATA_PIN = 26
-		dht22_sensor = Adafruit_DHT.DHT22
+#		DHT_READ_TIMEOUT = 5
+#		DHT_DATA_PIN = 26
+#		dht22_sensor = Adafruit_DHT.DHT22
 
 		#Initialize connections with JSON formatting
 		myurl = "https://demo.thingsboard.io/api/v1/3mmZ09cG3cyrzFZku4BF/telemetry"
@@ -60,7 +60,7 @@ class Update:
 #		else:
 		print(" ")
 
-		humidity, temperature = Adafruit_DHT.read_retry(dht11_sensor, DHT_DATA_PIN)
+#		humidity, temperature = Adafruit_DHT.read_retry(dht11_sensor, DHT_DATA_PIN)
 
 		if sensorCount > 10000:
 			lightStatus = "on"
