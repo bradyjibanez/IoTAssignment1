@@ -1,7 +1,7 @@
 Be sure to run with Python3 on Raspberrypi 3 running Raspbian
 
 Install pymongo:
-	~/$ pip3 install pymongo=2.7.2
+	~/$ pip3 install pymongo==2.7.2
 
 Install urllib:
 	~/$ pip3 install urllib
@@ -24,7 +24,7 @@ Configure mongoDB:
 		~/$ mongo
 		> use IoTI
 		> db.createCollection("AmbientLightSensorData")
-		> dd.addUser(
+		> db.addUser(
 		... {
 		... user: "thepi",
 		... pwd: "thepi",
@@ -35,3 +35,4 @@ Configure mongoDB:
 Should be good to go.
 		
 
+# IoTI
