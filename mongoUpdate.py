@@ -2,6 +2,13 @@ from pymongo import MongoClient
 from urllib.request import urlopen
 import socket, datetime, pytz, sys, json, urllib
 import Adafruit_DHT
+from bson import ObjectId
+
+class JSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, ObjectId):
+            return str(o)
+        return json.JSONEncoder.default(self, o)
 
 
 class Update:
@@ -77,7 +84,7 @@ class Update:
 			}
 			ambientLightSensorData.insert(post)
 			count += 1
-
+			post = JSONEncoder().encode(post)
 			jsondata = json.dumps(post)
 			jsondataasbytes = jsondata.encode('utf-8')  # needs to be bytes
 			req.add_header('Content-Length', len(jsondataasbytes))
@@ -100,6 +107,7 @@ class Update:
 			ambientLightSensorData.insert(post)
 			count += 1
 
+			post = JSONEncoder().encode(post)
 			jsondata = json.dumps(post)
 			jsondataasbytes = jsondata.encode('utf-8')  # needs to be bytes
 			req.add_header('Content-Length', len(jsondataasbytes))
