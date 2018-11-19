@@ -10,7 +10,7 @@ class Update:
 
 	db = CONNECTION.IoTI
 	ambientLightSensorData = db.AmbientLightSensorData
-	db.AmbientLightSensorData.delete_many({})
+#	db.AmbientLightSensorData.delete_many({})
 
 #	yourName = socket.gethostname()
 #	yourIP = socket.gethostbyname(yourName)
@@ -47,7 +47,7 @@ class Update:
 #			sys.exit(0)
 #		else:
 		print(" ")
-		if sensorCount > 10000:
+		if sensorCount > 1000:
 			lightStatus = "on"
 			post = {"author": yourName,
 				"author IP": yourIP,
