@@ -19,7 +19,7 @@ class Update:
 #	userDataJSON = json.loads(userData)
 #	count = 1
 
-	def runUpdate(self, sensorCount, ambientLightSensorData, count):
+	def runUpdate(self, sensorCount, ambientLightSensorData, count, temperature, humidity):
 
 #		MONGO_DB = "IoTI"
 #		CONNECTION = MongoClient()
@@ -52,6 +52,8 @@ class Update:
 			post = {"author": yourName,
 				"author IP": yourIP,
 				"light status": lightStatus,
+				"temperature": temperature,
+				"humidity": humidity,
 				"times updated": count,
 				"date": userCTimeString}
 			ambientLightSensorData.insert(post)
@@ -61,6 +63,8 @@ class Update:
 			post = {"author": yourName,
 				"author IP": yourIP,
 				"light status": lightStatus,
+				"temperature": temperature,
+				"humidity": humidity,
 				"times updated": count,
 				"date": userCTimeString}
 			ambientLightSensorData.insert(post)
