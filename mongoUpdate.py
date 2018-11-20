@@ -1,15 +1,15 @@
 from pymongo import MongoClient
 from urllib.request import urlopen
-import socket, datetime, pytz, sys, json, urllib
-import Adafruit_DHT
 from bson import ObjectId
+import socket, datetime, pytz, sys, json, urllib, requests
+import Adafruit_DHT
+#from bson import ObjectId
 
 class JSONEncoder(json.JSONEncoder):
     def default(self, o):
         if isinstance(o, ObjectId):
             return str(o)
         return json.JSONEncoder.default(self, o)
-
 
 class Update:
 
@@ -19,6 +19,10 @@ class Update:
 
 	db = CONNECTION.IoTI
 	ambientLightSensorData = db.AmbientLightSensorData
+
+#	headers = {'content-type': 'application/json'}
+#	url = "https://demo.thingsboard.io/api/v1/3mmZ09cG3cyrzFZku4BF/telemetry"
+#	str(params)
 #	db.AmbientLightSensorData.delete_many({})
 
 #	yourName = socket.gethostname()
@@ -42,6 +46,9 @@ class Update:
 		response = urlopen("http://ip-api.com/json")
 		userData = response.read().decode("utf-8")
 		userDataJSON = json.loads(userData)
+		headers = {'content-type': 'application/json'}
+		url = "https://demo.thingsboard.io/api/v1/3mmZ09cG3cyrzFZku4BF/telemetry"
+
 
 		# DHT22 Sensor Initialization
 #		DHT_READ_TIMEOUT = 5
@@ -66,7 +73,6 @@ class Update:
 #			sys.exit(0)
 #		else:
 		print(" ")
-			
 #		humidity, temperature = Adafruit_DHT.read_retry(dht11_sensor, DHT_DATA_PIN)
 
 		if sensorCount > 1000:
@@ -76,8 +82,6 @@ class Update:
 				"author": yourName,
 				"author IP": yourIP,
 				"light status": lightStatus,
-				"temperature": temperature,
-				"humidity": humidity,
 				"times updated": count,
 				"date": userCTimeString,
 				"Temperature": temperature,
@@ -98,16 +102,16 @@ class Update:
 				"author": yourName,
 				"author IP": yourIP,
 				"light status": lightStatus,
-				"temperature": temperature,
-				"humidity": humidity,
 				"times updated": count,
 				"date": userCTimeString,
 				"Temperature": temperature,
 				"Humidity": humidity
 			}
 			ambientLightSensorData.insert(post)
+			latestData = ambientLightSensorData.find_one({"author IP": yourIP, "times updated": count})
 			count += 1
-
+			latestData = JSONEncoder().encode(latestData)
+			requests.post(url, data=json.dumps(latestData), headers=headers)
 #			post = JSONEncoder().encode(post)
 #			jsondata = json.dumps(post)
 #			jsondataasbytes = jsondata.encode('utf-8')  # needs to be bytes
