@@ -29,7 +29,7 @@ class Update:
 			userDataJSON = json.loads(userData)
 
 		headers = {'content-type': 'application/json'}
-		url = "https://demo.thingsboard.io/api/v1/3mmZ09cG3cyrzFZku4BF/telemetry"
+		url = "https://demo.thingsboard.io/api/v1/pctO13ntOzj0uqYw1bHc/telemetry"
 
 		userCurrentTime = datetime.datetime.now(pytz.timezone(userDataJSON['timezone']))
 		userCTimeString = userCurrentTime.strftime('%d/%m/%Y|%I:%M:%S')
@@ -52,18 +52,22 @@ class Update:
 				"Humidity": humidity
 			}
 			ambientLightSensorData.insert(post)
+			latestData = ambientLightSensorData.find_one({"Humidity": humidity, "Temperature": temperature, "times updated": count})
+			latestData = JSONEncoder().encode(post)
+
 
 			count += 1
 
-			req = urllib.request.Request(url, post)
-			req.add_header('Accept', 'application/json; charset=utf-8')
-			jsondata = json.dumps(post)
-			jsondataasbytes = jsondata.encode('utf-8')  # needs to be bytes
-			req.add_header('Content-Length', len(jsondataasbytes))
-			print (jsondataasbytes)
-			response = urllib.request.urlopen(req, jsondataasbytes)
+			req = requests.post(url, verify=False, json=latestData)
+			#req.add_header('Accept', 'application/json; charset=utf-8')
+			#jsondata = json.dumps(post)
+			#jsondataasbytes = jsondata.encode('utf-8')  # needs to be bytes
+			#req.add_header('Content-Length', len(jsondataasbytes))
+#			print (jsondataasbytes)
+#			response = urllib.request.urlopen(req, jsondataasbytes)
+#			requests.post(url, data=json.dumps(latestData), headers=headers)
 
-		else:
+		elif sensorCount < 1000:
 			lightStatus = "off"
 			post = {
 				"author": yourName,
@@ -81,5 +85,5 @@ class Update:
 			count += 1
 
 			req = requests.post(url, verify=False, json=latestData)
-			print(latestData)
-			requests.post(url, data=json.dumps(latestData), headers=headers)
+#			print(latestData)
+#			requests.post(url, data=json.dumps(latestData), headers=headers)
