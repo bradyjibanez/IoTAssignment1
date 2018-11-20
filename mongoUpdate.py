@@ -1,8 +1,7 @@
 from pymongo import MongoClient
 from urllib.request import urlopen
 from bson import ObjectId
-import socket, datetime, pytz, sys, json, urllib, requests
-import Adafruit_DHT
+import socket, datetime, pytz, sys, json, urllib, requests, Adafruit_DHT
 #from bson import ObjectId
 
 class JSONEncoder(json.JSONEncoder):
@@ -75,6 +74,9 @@ class Update:
 		print(" ")
 #		humidity, temperature = Adafruit_DHT.read_retry(dht11_sensor, DHT_DATA_PIN)
 
+		temperature = str(temperature)
+		humidity = str(humidity)
+
 		if sensorCount > 1000:
 
 			lightStatus = "on"
@@ -108,9 +110,11 @@ class Update:
 				"Humidity": humidity
 			}
 			ambientLightSensorData.insert(post)
-			latestData = ambientLightSensorData.find_one({"author IP": yourIP, "times updated": count})
+			latestData = ambientLightSensorData.find_one({"Humidity": humidity, "Temperature": temperature, "times updated": count})
 			count += 1
 			latestData = JSONEncoder().encode(latestData)
+			print(JSONEncoder().encode(latestData))
+			print(latestData)
 			requests.post(url, data=json.dumps(latestData), headers=headers)
 #			post = JSONEncoder().encode(post)
 #			jsondata = json.dumps(post)
