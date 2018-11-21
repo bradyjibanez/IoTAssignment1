@@ -17,9 +17,9 @@ class Update:
 	CONNECTION = MongoClient()
 
 	db = CONNECTION.IoTI
-	ambientLightSensorData = db.AmbientLightSensorData
+	SensorInput = db.SensorInput
 
-	def runUpdate(self, sensorCount, ambientLightSensorData, count, temperature, humidity):
+	def runUpdate(self, sensorCount, SensorInput, count, temperature, humidity):
 
 		yourName = socket.gethostname()
 		yourIP = socket.gethostbyname(yourName)
@@ -39,7 +39,7 @@ class Update:
 		temperature = str(temperature)
 		humidity = str(humidity)
 
-		if sensorCount > 1000:
+		if sensorCount > 8000:
 
 			lightStatus = "on"
 			post = {
@@ -51,23 +51,16 @@ class Update:
 				"Temperature": temperature,
 				"Humidity": humidity
 			}
-			ambientLightSensorData.insert(post)
-			latestData = ambientLightSensorData.find_one({"Humidity": humidity, "Temperature": temperature, "times updated": count})
+			SensorInput.insert(post)
+			latestData = SensorInput.find_one({"Humidity": humidity, "Temperature": temperature, "times updated": count})
 			latestData = JSONEncoder().encode(post)
-
 
 			count += 1
 
-			req = requests.post(url, verify=False, json=latestData)
-			#req.add_header('Accept', 'application/json; charset=utf-8')
-			#jsondata = json.dumps(post)
-			#jsondataasbytes = jsondata.encode('utf-8')  # needs to be bytes
-			#req.add_header('Content-Length', len(jsondataasbytes))
-#			print (jsondataasbytes)
-#			response = urllib.request.urlopen(req, jsondataasbytes)
-#			requests.post(url, data=json.dumps(latestData), headers=headers)
+			req = requests.post(url, latestData)
+			print(req)
 
-		elif sensorCount < 1000:
+		elif sensorCount < 8000:
 			lightStatus = "off"
 			post = {
 				"author": yourName,
@@ -78,12 +71,11 @@ class Update:
 				"Temperature": temperature,
 				"Humidity": humidity
 			}
-			ambientLightSensorData.insert(post)
-			latestData = ambientLightSensorData.find_one({"Humidity": humidity, "Temperature": temperature, "times updated": count})
+			SensorInput.insert(post)
+			latestData = SensorInput.find_one({"Humidity": humidity, "Temperature": temperature, "times updated": count})
 			latestData = JSONEncoder().encode(post)
 
 			count += 1
 
-			req = requests.post(url, verify=False, json=latestData)
-#			print(latestData)
-#			requests.post(url, data=json.dumps(latestData), headers=headers)
+			req = requests.post(url, latestData)
+			print(req)

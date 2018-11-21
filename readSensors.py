@@ -7,7 +7,7 @@ GPIO.setmode(GPIO.BOARD)
 ambientSensorIO = 15
 temperatureSensorIO = 7
 update = Update()
-ambientLightSensorData = update.ambientLightSensorData
+SensorInput = update.SensorInput
 
 def getLightReading(ambientSensorIO):
 
@@ -38,41 +38,36 @@ try:
         charge = getLightReading(ambientSensorIO)
         temperature, humidity = getTemperatureHumidity(temperatureSensorIO)
 
-        if charge > 1000:
-            update.runUpdate(charge, ambientLightSensorData, useCount, temperature, humidity)
+        if charge > 8000:
+            update.runUpdate(charge, SensorInput, useCount, temperature, humidity)
             print("Light level:", charge, "Light status: green on")
-            urllib.request.urlopen("http://192.168.43.232/?cmd=TURN_ON_GREEN")
+            urllib.request.urlopen("http://192.168.0.59/?cmd=TURN_ON_GREEN")
             useCount += 1
-        if charge < 1000:
-            update.runUpdate(charge, ambientLightSensorData, useCount, temperature, humidity)
+        if charge < 8000:
+            update.runUpdate(charge, SensorInput, useCount, temperature, humidity)
             print("Light level:", charge, "Light status: green off")
-            urllib.request.urlopen("http://192.168.43.232/?cmd=TURN_OFF_GREEN")
+            urllib.request.urlopen("http://192.168.0.59/?cmd=TURN_OFF_GREEN")
             useCount += 1
         if temperature > 35:
-            update.runUpdate(charge, ambientLightSensorData, useCount, temperature, humidity)
+            update.runUpdate(charge, SensorInput, useCount, temperature, humidity)
             print("Temperature:", temperature, "Light status: red on")
-            urllib.request.urlopen("http://192.168.43.232/?cmd=TURN_ON_RED")
+            urllib.request.urlopen("http://192.168.0.59/?cmd=TURN_ON_RED")
             useCount += 1
         if temperature < 35:
-            update.runUpdate(charge, ambientLightSensorData, useCount, temperature, humidity)
+            update.runUpdate(charge, SensorInput, useCount, temperature, humidity)
             print("Temperature:", temperature, "Light status: red off")
-            urllib.request.urlopen("http://192.168.43.232/?cmd=TURN_OFF_RED")
+            urllib.request.urlopen("http://192.168.0.59/?cmd=TURN_OFF_RED")
             useCount += 1
-        if  humidity > 20:
-            update.runUpdate(charge, ambientLightSensorData, useCount, temperature, humidity)
+        if  humidity > 50:
+            update.runUpdate(charge, SensorInput, useCount, temperature, humidity)
             print("Humidity:", humidity, "Light status: blue on")
-            urllib.request.urlopen("http://192.168.43.232/?cmd=TURN_ON_BLUE")
+            urllib.request.urlopen("http://192.168.0.59/?cmd=TURN_ON_BLUE")
             useCount += 1
-        if humidity < 20:
-            update.runUpdate(charge, ambientLightSensorData, useCount, temperature, humidity)
+        if humidity < 50:
+            update.runUpdate(charge, SensorInput, useCount, temperature, humidity)
             print("Humidity:", humidity, "Light status: blue off")
-            urllib.request.urlopen("http://192.168.43.232/?cmd=TURN_OFF_BLUE")
+            urllib.request.urlopen("http://192.168.0.59/?cmd=TURN_OFF_BLUE")
             useCount += 1
-
-#        print(" ")
-#        print("SENSOR READINGS")
-#        print('        Temperature: {0:0.1f} C Humidity: {1:0.1f} %'.format(temperature,humidity))
-#        print('        LightCharge:', charge)
 
 except KeyboardInterrupt:
     pass
