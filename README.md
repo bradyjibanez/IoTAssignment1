@@ -28,7 +28,7 @@ Configure mongoDB:
 		... {
 		... user: "thepi",
 		... pwd: "thepi",
-		... roles: [{role: "readWrite", db: "IoTI"})
+		... roles: [{role: "readWrite"}]
 		... }
 		... )
 
